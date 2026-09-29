@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Laboratorio PLC 4.0 · GRAFCET, Ladder e ISA 5.1</title>
+<link rel="stylesheet" href="styles.css"></head><body>
+<header>
+ <h1>Laboratorio PLC 4.0</h1>
+ <nav id="tabs">
+  <button data-t="curso">Curso</button><button data-t="plc">PLC y E/S</button><button data-t="isa">Simbología ISA 5.1</button>
+  <button data-t="proceso">Proceso</button><button data-t="grafcet">GRAFCET</button><button data-t="ladder">Ladder</button>
+ </nav>
+ <div id="runbar">
+  <button id="run" class="go">Ejecutar</button><button id="rst">Reiniciar</button>
+  <select id="mode" aria-label="Programa activo"><option value="ambos">GRAFCET + Ladder</option><option value="grafcet">Solo GRAFCET</option><option value="ladder">Solo Ladder</option></select>
+  <button id="pdf">Exportar PDF</button><span id="led" title="Estado del PLC"></span>
+ </div>
+</header>
+<main>
+<section id="curso"><h2>Ruta de las 6 clases</h2><div id="cards" class="grid"></div></section>
+
+<section id="plc"><h2>Selección de PLC y parametrización</h2>
+ <div class="two">
+  <div class="panel"><label>Modelo<select id="model"></select></label><p id="spec" class="mut"></p>
+   <label>Dirección IP<input id="ip" value="192.168.0.1"></label>
+   <label>Máscara de subred<input id="mask" value="255.255.255.0"></label>
+   <label>Puerta de enlace<input id="gw" value="192.168.0.254"></label>
+   <p id="ipmsg"></p></div>
+  <div class="panel"><div id="io"></div><p class="mut">Pulse las entradas digitales para conmutarlas; mueva las analógicas con el control deslizante.</p></div>
+ </div></section>
+
+<section id="isa"><h2>Simbología ISA 5.1</h2><div id="lib"></div>
+ <div class="two"><div class="panel"><h3>Identificación de instrumentos</h3>
+ <table><tr><th>Primera letra</th><th>Significado</th><th>Letras sucesivas</th><th>Significado</th></tr>
+ <tr><td>L</td><td>Nivel</td><td>I</td><td>Indicación</td></tr><tr><td>T</td><td>Temperatura</td><td>C</td><td>Control</td></tr>
+ <tr><td>P</td><td>Presión</td><td>T</td><td>Transmisión</td></tr><tr><td>F</td><td>Caudal</td><td>S</td><td>Interruptor</td></tr>
+ <tr><td>A</td><td>Análisis</td><td>V</td><td>Válvula</td></tr><tr><td>H</td><td>Manual</td><td>H / L</td><td>Alto / Bajo</td></tr></table>
+ <p class="mut">Ejemplo: LSH-101 es el interruptor de nivel alto del lazo 101.</p></div>
+ <div class="panel"><h3>Líneas</h3><svg viewBox="0 0 260 130" class="lines">
+  <line x1="10" y1="15" x2="150" y2="15"/><text x="160" y="19">Proceso</text>
+  <line x1="10" y1="45" x2="150" y2="45" stroke-dasharray="6 4"/><text x="160" y="49">Señal eléctrica</text>
+  <line x1="10" y1="75" x2="150" y2="75" stroke-dasharray="10 4 2 4"/><text x="160" y="79">Señal neumática</text>
+  <line x1="10" y1="105" x2="150" y2="105" stroke-dasharray="2 4"/><text x="160" y="109">Enlace de datos</text></svg></div></div></section>
+
+<section id="proceso"><h2>Constructor de procesos</h2>
+ <div class="two wide"><div><div id="pal" class="pal"></div><svg id="cv" viewBox="0 0 900 420"></svg></div>
+ <div class="panel" id="insp"><p class="mut">Agregue símbolos desde la paleta, arrástrelos y asigne cada uno a una dirección del PLC.</p></div></div></section>
+
+<section id="grafcet"><h2>Editor GRAFCET</h2>
+ <div class="two wide"><div class="panel"><table id="gt"></table><button id="gadd">Agregar etapa</button>
+ <p class="mut">Acciones: <code>Q0</code> (nivel), <code>S:Q1</code> (set), <code>R:Q1</code> (reset), <code>AQ0=60</code>. Receptividad: <code>I0 &amp;&amp; !I1</code>, <code>T&gt;=3</code> (segundos en la etapa).</p></div>
+ <div class="panel"><svg id="gsvg"></svg></div></div></section>
+
+<section id="ladder"><h2>Editor Ladder</h2>
+ <div class="two wide"><div class="panel"><textarea id="ltxt" rows="10" spellcheck="false"></textarea>
+ <p class="mut">Un peldaño por línea: <code>I0 &amp; !I1 | Q0 -&gt; Q0</code>. Contactos en serie con <code>&amp;</code>, rama paralela después de <code>|</code>, <code>!</code> es contacto NC. Bobinas: <code>-&gt; Q0</code>, <code>-&gt; S Q1</code>, <code>-&gt; R Q1</code>.</p></div>
+ <div class="panel"><svg id="lsvg"></svg></div></div></section>
+</main>
+<div id="report"></div>
+<script src="app.js"></script></body></html>
